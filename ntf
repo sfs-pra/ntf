@@ -1,5 +1,5 @@
 #!/bin/ash
-v=151105 #sfslinux@gmail.com
+v=151105+1116 #sfslinux@gmail.com
 notifysend=/usr/bin/notify-send
 err=/usr/share/pixmaps/error48.png
 info=/usr/share/pixmaps/info48.png
@@ -18,6 +18,9 @@ placement="geometry=-0"
 t="`echo "$1" |sed 's/-[a-z]\+//' |sed 's/[a-z]\+//'`"
 [ "$t" ] && time="$t"
 
+[ $# -gt 10 ] && exec ntf -a "$0 $1 $2 ..." \
+                      "Нет, $# аргументов не возьму, 10 максимум"
+
 #### file ############
 if [ "$1" = "-f" ] ;then
 shift
@@ -25,7 +28,7 @@ shift
 t="Выберите файл $f"
 [ "$2" ] && m1='<text use-markup="true"><label>"<b>'$2'</b>"</label></text>'
 [ "$3" ] && m1='<text wrap="true" use-markup="true"><label>"<b>'$2'</b>
-<i>'$3'</i>"</label></text>'
+<i>'$(echo -ne "$3$4$5$6$7$8$9")'</i>"</label></text>'
 
 MAIN_DIALOG='	
 <window title="'$t'"  window-position="1" icon-name="gtk-file">
@@ -82,7 +85,7 @@ exit
 fi
 ##########
 
-[ "$3" = "" ] && c=" " || c="$3"
+[ "$3" = "" ] && c=" " || c="$(echo -ne "$3$4$5$6$7$8$9")"
 [ "`pidof X Xorg.bin Xorg`" = "" ] && echo "$2 $c" && exit
 
 if [ "$1" = "--test" ] ;then
@@ -271,7 +274,7 @@ if [ "$1" = "-l" ] ;then
 shift
 sel="$(echo "$1"|sed 's/|/\n/g' |yad   --title "$2" --list --text \
     "<span size='large'><b>$2</b></span>
-<i>$3</i>"  \
+<i>$(echo -ne "$3$4$5$6$7$8$9")</i>"  \
 	--regex-search $yad_deco \
 	--search-column=1 \
 	--center \
@@ -296,7 +299,7 @@ shift
 tt="`echo "$2" |sed 's/\\\n//g' |head -1`"
 sel="$(echo "$1"|sed 's/|/\n/g' |sed 's/=/\n/g' |yad   --title "$tt" --list $chk --text \
     "<span size='large'><b>$2</b></span>
-<i>$3</i>"  \
+<i>$(echo -ne "$3$4$5$6$7$8$9")</i>"  \
 	--regex-search $yad_deco \
 	--search-column=2 \
 	--separator= \
